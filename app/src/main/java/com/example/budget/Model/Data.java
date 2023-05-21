@@ -2,11 +2,13 @@ package com.example.budget.Model;
 
 public class Data {
 
+
     private int amount;
     private String type;
     private String note;
     private String id;
-    private String date;
+
+    public Data(){}
 
     public Data(int amount, String type, String note, String id, String date){
         this.amount=amount;
@@ -57,6 +59,6 @@ public class Data {
         this.date = date;
     }
 
-
+    private String date;
 
 }
