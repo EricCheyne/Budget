@@ -1,17 +1,25 @@
 package com.example.budget;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,12 +43,25 @@ public class DashBoardFragment extends Fragment {
 
     private Animation FadOpen,FadeClose;
 
+    //Firebase
+
+    private FirebaseAuth mAuth;
+    private DatabaseReference mIncomeDatabase;
+    private DatabaseReference mExpenseDatabase;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View myview= inflater.inflate(R.layout.fragment_dash_board, container, false);
+
+        mAuth=FirebaseAuth.getInstance();
+        FirebaseUser mUser=mAuth.getCurrentUser();
+        String uid=mUser.getUid();
+
+        mIncomeDatabase= FirebaseDatabase.getInstance().getReference().child("IncomeData").child(uid);
+        mExpenseDatabase= FirebaseDatabase.getInstance().getReference().child("ExpenseData").child(uid);
 
         //connect floating button to layout
 
@@ -113,6 +134,60 @@ public class DashBoardFragment extends Fragment {
 
             }
         });
+    }
+
+    public void incomeDataInsert() {
+        AlertDialog.Builder mydialog=new AlertDialog.Builder(getActivity());
+
+        LayoutInflater inflater = LayoutInflater.from(getActivity());
+
+        View myviewm=inflater.inflate(R.layout.custom_layout_for_insertdata, null);
+        mydialog.setView(myviewm);
+        AlertDialog dialog=mydialog.create();
+
+
+        EditText edtAmmount=myviewm.findViewById(R.id.ammount_edt);
+        EditText edtType=myviewm.findViewById(R.id.type_edt);
+        EditText edtNote=myviewm.findViewById(R.id.note_edt);
+
+        Button btnSave=myviewm.findViewById(R.id.btnSave);
+        Button btnCansel=myviewm.findViewById(R.id.btnCancel);
+
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String type=edtType.getText().toString().trim();;
+                String ammount=edtAmmount.getText().toString().trim();
+                String note=edtNote.getText().toString().trim();
+
+                if(TextUtils.isEmpty(type)) {
+                    edtType.setError("Required Field..");
+                    return;
+                }
+                if(TextUtils.isEmpty(ammount)) {
+                    edtAmmount.setError("Required Field..");
+                    return;
+                }
+
+                int ourammountint=Integer.parseInt(ammount);
+
+                if(TextUtils.isEmpty(note)) {
+                    edtNote.setError("Required Field..");
+                    return;
+                }
+
+            }
+        });
+
+        btnCansel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+
     }
 
 }

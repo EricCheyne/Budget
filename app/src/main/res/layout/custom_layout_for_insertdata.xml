@@ -83,7 +83,7 @@
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/typet_edt">
+                        android:id="@+id/type_edt">
 
                     </EditText>
 
@@ -120,9 +120,9 @@
                     android:layout_margin="10dp">
 
                     <EditText
+                        android:id="@+id/note_edt"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/note_edt">
+                        android:layout_height="wrap_content">
 
                     </EditText>
 
