@@ -268,7 +268,9 @@ public class DashBoardFragment extends Fragment {
                     return;
                 }
 
-                
+
+
+
                 int inamount = Integer.parseInt(tmAmmount);
 
                 if (TextUtils.isEmpty(tmtype)) {
