@@ -193,7 +193,6 @@ public class DashBoardFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String type = edtType.getText().toString().trim();
-                ;
                 String ammount = edtAmmount.getText().toString().trim();
                 String note = edtNote.getText().toString().trim();
 
