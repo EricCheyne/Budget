@@ -1,9 +1,12 @@
 package com.example.budget;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -43,6 +46,17 @@ public class ExpenseFragment extends Fragment {
     // Text view
 
     private TextView expenseTotalSum;
+
+    //Update edit text
+
+    private EditText edtAmmount;
+    private EditText edtType;
+    private EditText edtNote;
+
+    //button for update and delete
+
+    private Button btnUpdate;
+    private Button btnDelete;
 
 
     @Override
@@ -120,42 +134,88 @@ public class ExpenseFragment extends Fragment {
                 holder.setType(model.getType());
                 holder.setNote(model.getNote());
                 holder.setDate(model.getDate());
+
+                holder.mView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        updateDataItem();
+                    }
+                });
             }
         };
         recyclerView.setAdapter(adapter);
     }
+
+    class MyViewHolder extends RecyclerView.ViewHolder {
+
+        View mView;
+
+        public MyViewHolder(@NonNull View itemView) {
+            super(itemView);
+            mView = itemView;
+        }
+
+        void setType(String type) {
+            TextView mType = mView.findViewById(R.id.type_txt_expense);
+            mType.setText(type);
+        }
+
+        void setNote(String note) {
+
+            TextView mNote = mView.findViewById(R.id.note_txt_expense);
+            mNote.setText(note);
+        }
+
+        void setDate(String date) {
+            TextView mDate = mView.findViewById(R.id.date_txt_expense);
+            mDate.setText(date);
+        }
+
+        void setAmmount(int ammount) {
+            TextView mAmmount = mView.findViewById(R.id.ammount_txt_expense);
+            String stammount = String.valueOf(ammount);
+            mAmmount.setText(stammount);
+        }
+
+    }
+
+    private void updateDataItem(){
+
+        AlertDialog.Builder mydialog=new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater=LayoutInflater.from(getActivity());
+        View myview=inflater.inflate(R.layout.update_data_item,null);
+        mydialog.setView(myview);
+
+        edtAmmount=myview.findViewById(R.id.ammount_edt);
+        edtType=myview.findViewById(R.id.type_edt);
+        edtNote=myview.findViewById(R.id.note_edt);
+
+        btnUpdate=myview.findViewById(R.id.btnUpdate);
+        btnDelete=myview.findViewById(R.id.btnuPD_Delete);
+
+        AlertDialog dialog= mydialog.create();
+
+        btnUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+
+
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+
+    }
+
 }
 
 
- class MyViewHolder extends RecyclerView.ViewHolder {
-
-    View mView;
-
-    public MyViewHolder(@NonNull View itemView) {
-        super(itemView);
-        mView = itemView;
-    }
-
-    void setType(String type) {
-        TextView mType = mView.findViewById(R.id.type_txt_expense);
-        mType.setText(type);
-    }
-
-    void setNote(String note) {
-
-        TextView mNote = mView.findViewById(R.id.note_txt_expense);
-        mNote.setText(note);
-    }
-
-    void setDate(String date) {
-        TextView mDate = mView.findViewById(R.id.date_txt_expense);
-        mDate.setText(date);
-    }
-
-    void setAmmount(int ammount) {
-        TextView mAmmount = mView.findViewById(R.id.ammount_txt_expense);
-        String stammount = String.valueOf(ammount);
-        mAmmount.setText(stammount);
-    }
-
-}

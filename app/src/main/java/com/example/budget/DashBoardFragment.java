@@ -220,7 +220,7 @@ public class DashBoardFragment extends Fragment {
 
                 mIncomeDatabase.child(id).setValue(data);
 
-                Toast.makeText(getActivity(), "Data ADDED", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Data Added", Toast.LENGTH_SHORT).show();
 
                 ftAnimation();
                 dialog.dismiss();
@@ -283,7 +283,7 @@ public class DashBoardFragment extends Fragment {
 
                 Data data = new Data(inamount, tmtype, tmnote, id, mDate);
                 mExpenseDatabase.child(id).setValue(data);
-                Toast.makeText(getActivity(), "Data added", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Data Added", Toast.LENGTH_SHORT).show();
 
                 ftAnimation();
                 dialog.dismiss();
