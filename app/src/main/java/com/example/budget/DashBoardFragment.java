@@ -10,12 +10,14 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.budget.Model.Data;
@@ -64,6 +66,11 @@ public class DashBoardFragment extends Fragment {
     private DatabaseReference mIncomeDatabase;
     private DatabaseReference mExpenseDatabase;
 
+    //Recycler view
+
+    private RecyclerView mRecyclerIncome;
+    private RecyclerView mRecyclerExpense;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -93,6 +100,11 @@ public class DashBoardFragment extends Fragment {
 
         totalIncomeResult=myview.findViewById(R.id.income_set_result);
         totalExpenseResult=myview.findViewById(R.id.expense_set_result);
+
+        //Recycler
+
+        mRecyclerIncome=myview.findViewById(R.id.recycler_income);
+        mRecyclerExpense=myview.findViewById(R.id.recycler_expense);
 
         //Animation connect..
 
@@ -189,18 +201,23 @@ public class DashBoardFragment extends Fragment {
             }
         });
 
-        mIncomeDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+        //Recycler
+
+        LinearLayoutManager layoutManagerIncome=new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
+
+        layoutManagerIncome.setStackFromEnd(true);
+        layoutManagerIncome.setReverseLayout(true);
+        mRecyclerIncome.setHasFixedSize(true);
+        mRecyclerIncome.setLayoutManager(layoutManagerIncome);
 
 
-            }
+        LinearLayoutManager layoutManagerExpense=new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL,false);
+        layoutManagerExpense.setReverseLayout(true);
+        layoutManagerExpense.setStackFromEnd(true);
+        mRecyclerExpense.setHasFixedSize(true);
+        mRecyclerExpense.setLayoutManager(layoutManagerExpense);
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
 
 
 
