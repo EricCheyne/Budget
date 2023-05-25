@@ -107,7 +107,7 @@ public class IncomeFragment extends Fragment {
 
                     String stTotalvale=String.valueOf(totlatvalue);
 
-                    incomeTotalSum.setText(stTotalvale);
+                    incomeTotalSum.setText(stTotalvale+".00");
 
 
                 }

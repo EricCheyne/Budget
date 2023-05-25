@@ -99,17 +99,17 @@ public class ExpenseFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                int totlatvalue = 0;
+                int expensesum = 0;
 
                 for (DataSnapshot mysanapshot:dataSnapshot.getChildren()) {
 
                     Data data=mysanapshot.getValue(Data.class);
 
-                    totlatvalue+=data.getAmount();
+                    expensesum+=data.getAmount();
 
-                    String stTotalvale=String.valueOf(totlatvalue);
+                    String strExpensesum=String.valueOf(expensesum);
 
-                    expenseSumResult.setText(stTotalvale);
+                    expenseSumResult.setText(strExpensesum+".00");
 
 
                 }

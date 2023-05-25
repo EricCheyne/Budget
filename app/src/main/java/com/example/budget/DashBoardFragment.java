@@ -149,7 +149,7 @@ public class DashBoardFragment extends Fragment {
 
                     String stResult=String.valueOf(totalsum);
 
-                    totalIncomeResult.setText(stResult);
+                    totalIncomeResult.setText(stResult+".00");
 
                 }
             }
@@ -175,7 +175,7 @@ public class DashBoardFragment extends Fragment {
 
                     String strTotalSum=String.valueOf(totalsum);
 
-                    totalExpenseResult.setText(strTotalSum);
+                    totalExpenseResult.setText(strTotalSum+".00");
 
 
 
