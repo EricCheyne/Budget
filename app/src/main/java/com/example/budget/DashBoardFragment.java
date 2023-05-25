@@ -12,15 +12,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.budget.Model.Data;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.util.*;
@@ -46,6 +52,11 @@ public class DashBoardFragment extends Fragment {
     //Animation
 
     private Animation FadOpen, FadeClose;
+
+    //Dashboard income and expense result
+
+    private TextView totalIncomeResult;
+    private TextView totalExpenseResult;
 
     //Firebase
 
@@ -77,6 +88,11 @@ public class DashBoardFragment extends Fragment {
 
         fab_income_txt = myview.findViewById(R.id.income_ft_text);
         fab_expense_txt = myview.findViewById(R.id.expense_ft_text);
+
+        //Total income and expense result set
+
+        totalIncomeResult=myview.findViewById(R.id.income_set_result);
+        totalExpenseResult=myview.findViewById(R.id.expense_set_result);
 
         //Animation connect..
 
@@ -116,6 +132,77 @@ public class DashBoardFragment extends Fragment {
 
             }
         });
+
+        //Calculate total income
+
+        mIncomeDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                int totalsum = 0;
+
+                for (DataSnapshot mysnap: dataSnapshot.getChildren()) {
+
+                    Data data=mysnap.getValue(Data.class);
+
+                    totalsum+=data.getAmount();
+
+                    String stResult=String.valueOf(totalsum);
+
+                    totalIncomeResult.setText(stResult);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        //Calculate total expense
+
+        mExpenseDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                int totalsum=0;
+
+                for (DataSnapshot mysnapshot:dataSnapshot.getChildren()) {
+
+                    Data data=mysnapshot.getValue(Data.class);
+                    totalsum+=data.getAmount();
+
+                    String strTotalSum=String.valueOf(totalsum);
+
+                    totalExpenseResult.setText(strTotalSum);
+
+
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        mIncomeDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
 
         return myview;
     }

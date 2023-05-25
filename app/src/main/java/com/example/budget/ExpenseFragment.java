@@ -27,6 +27,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Type;
+import java.text.DateFormat;
+import java.util.Date;
+
 
 /*
  * A simple {@link Fragment} subclass.
@@ -45,7 +49,7 @@ public class ExpenseFragment extends Fragment {
 
     // Text view
 
-    private TextView expenseTotalSum;
+    private TextView expenseSumResult;
 
     //Update edit text
 
@@ -57,6 +61,14 @@ public class ExpenseFragment extends Fragment {
 
     private Button btnUpdate;
     private Button btnDelete;
+
+    //Data variable
+
+    private String type;
+    private String note;
+    private int ammount;
+
+    private String post_key;
 
 
     @Override
@@ -72,7 +84,7 @@ public class ExpenseFragment extends Fragment {
 
         mExpenseDatabase = FirebaseDatabase.getInstance().getReference().child("ExpenseData").child(uid);
 
-        expenseTotalSum=myview.findViewById(R.id.expense_txt_result);
+        expenseSumResult=myview.findViewById(R.id.expense_txt_result);
 
         recyclerView = myview.findViewById(R.id.recycler_id_expense);
 
@@ -97,7 +109,7 @@ public class ExpenseFragment extends Fragment {
 
                     String stTotalvale=String.valueOf(totlatvalue);
 
-                    expenseTotalSum.setText(stTotalvale);
+                    expenseSumResult.setText(stTotalvale);
 
 
                 }
@@ -138,6 +150,12 @@ public class ExpenseFragment extends Fragment {
                 holder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
+                        post_key=getRef(position).getKey();
+                        type=model.getType();
+                        note=model.getNote();
+                        ammount=model.getAmount();
+
                         updateDataItem();
                     }
                 });
@@ -190,6 +208,17 @@ public class ExpenseFragment extends Fragment {
         edtType=myview.findViewById(R.id.type_edt);
         edtNote=myview.findViewById(R.id.note_edt);
 
+        edtType.setText(type);
+        edtType.setSelection(type.length());
+
+        edtNote.setText(note);
+        edtNote.setSelection(note.length());
+
+        edtAmmount.setText(String.valueOf(ammount));
+        edtAmmount.setSelection(String.valueOf(ammount).length());
+
+
+
         btnUpdate=myview.findViewById(R.id.btnUpdate);
         btnDelete=myview.findViewById(R.id.btnuPD_Delete);
 
@@ -199,6 +228,18 @@ public class ExpenseFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+                type=edtType.getText().toString().trim();
+                note=edtNote.getText().toString().trim();
+                String stammount=String.valueOf(ammount);
+                stammount=edtAmmount.getText().toString().trim();
+                int intamount=Integer.parseInt(stammount);
+                String mDate= DateFormat.getDateInstance().format(new Date());
+
+                Data data=new Data(intamount,type,note,post_key,mDate);
+                mExpenseDatabase.child(post_key).setValue(data);
+
+                dialog.dismiss();;
+
             }
         });
 
@@ -207,6 +248,8 @@ public class ExpenseFragment extends Fragment {
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                mExpenseDatabase.child(post_key).removeValue();
 
                 dialog.dismiss();
             }
